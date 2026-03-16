@@ -1,0 +1,36 @@
+# Environment
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.pyc
+.venv/
+venv/
+env/
+ENV/
+
+# Saved models (stored in Supabase Storage, not git)
+saved_models/*.pkl
+saved_models/
+
+# Logs
+*.log
+auto_retrain.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Replit
+.replit
+replit.nix
