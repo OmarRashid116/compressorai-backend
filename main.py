@@ -1,5 +1,5 @@
 """
-main.py — CompressorAI v5
+main.py — CompressorAI v6
 Replit-compatible FastAPI entry point.
 
 Fixes for Replit:
@@ -23,7 +23,7 @@ from slowapi.errors import RateLimitExceeded
 import uvicorn
 
 from config import CORS_ORIGINS, IS_PROD, get_supabase_client
-from routers import auth, compressors, datasets, analysis, retrain, reports, admin
+from routers import auth, compressors, datasets, analysis, retrain, reports, admin, maintenance
 
 logger = logging.getLogger("compressorai")
 logging.basicConfig(
@@ -39,7 +39,7 @@ limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
 # ── Lifespan ──────────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("🚀 CompressorAI v5 starting…")
+    logger.info("🚀 CompressorAI v6 starting…")
     logger.info(f"   Environment : {'PRODUCTION' if IS_PROD else 'development'}")
     logger.info(f"   CORS origins: {CORS_ORIGINS}")
 
@@ -53,7 +53,7 @@ async def lifespan(app: FastAPI):
             raise RuntimeError("Cannot start: database connection failed.") from e
 
     yield
-    logger.info("👋 CompressorAI v5 shutting down.")
+    logger.info("👋 CompressorAI v6 shutting down.")
 
 
 # ── App ───────────────────────────────────────────────────────
@@ -61,11 +61,10 @@ app = FastAPI(
     title="Industrial Air Compressor Optimizer API",
     description=(
         "AI-powered optimization for Industrial Air Compressors — "
-        "DBSCAN + GBR + Genetic Algorithm"
+        "DBSCAN + GBR + Genetic Algorithm + PM Compliance"
     ),
-    version="5.0.0",
+    version="6.0.0",
     lifespan=lifespan,
-    # Always show docs (useful for testing on Replit)
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
@@ -137,6 +136,7 @@ for _prefix in ("/api", ""):
     app.include_router(analysis.router,    prefix=f"{_prefix}/analysis",    tags=["Analysis"])
     app.include_router(retrain.router,     prefix=f"{_prefix}/retrain",     tags=["Retrain"])
     app.include_router(reports.router,     prefix=f"{_prefix}/reports",     tags=["Reports"])
+    app.include_router(maintenance.router, prefix=f"{_prefix}/maintenance", tags=["Maintenance"])
 
 @app.get("/health", include_in_schema=False)
 async def health_alias():
@@ -146,7 +146,7 @@ async def health_alias():
 # ── Health / root ─────────────────────────────────────────────
 @app.get("/", include_in_schema=False)
 async def root():
-    return {"message": "CompressorAI v5 API is running", "version": "5.0.0"}
+    return {"message": "CompressorAI v6 API is running", "version": "6.0.0"}
 
 
 @app.get("/api/health", tags=["System"])
@@ -161,7 +161,7 @@ async def health_check():
     status = "healthy" if db_ok else "degraded"
     return JSONResponse(
         status_code=200 if db_ok else 503,
-        content={"status": status, "version": "5.0.0", "database": "ok" if db_ok else "error"},
+        content={"status": status, "version": "6.0.0", "database": "ok" if db_ok else "error"},
     )
 
 
