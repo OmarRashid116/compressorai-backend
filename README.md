@@ -5,7 +5,7 @@ FastAPI backend for Industrial Air Compressor Optimizer.
 
 ---
 
-## 🚀 Free Deployment: Replit + Supabase
+## 🚀Deployment: Replit + Supabase
 
 ### Step 1 — Supabase Setup (already done if you have a project)
 1. Go to [supabase.com](https://supabase.com) → Your project → SQL Editor
